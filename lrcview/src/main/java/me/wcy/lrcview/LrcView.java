@@ -538,10 +538,12 @@ public class LrcView extends View {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             Rect rect=mPlayDrawable.getBounds();
+            int right=rect.right;
             if (mOnPlayClickListener.canCenterLinePlayClick()){
                 rect.right=getWidth() - mTimeTextWidth / 2;
             }
             boolean isContainBound= rect.contains((int) e.getX(), (int) e.getY());
+            rect.right=right;
             if (hasLrc() && isShowTimeline &&isContainBound) {
                 int centerLine = getCenterLine();
                 long centerLineTime = mLrcEntryList.get(centerLine).getTime();
