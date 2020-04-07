@@ -539,7 +539,6 @@ public class LrcView extends View {
         public boolean onSingleTapConfirmed(MotionEvent e) {
             Rect rect=mPlayDrawable.getBounds();
             if (mOnPlayClickListener.canCenterLinePlayClick()){
-                System.out.println(rect.toString());
                 rect.right=getWidth() - mTimeTextWidth / 2;
             }
             boolean isContainBound= rect.contains((int) e.getX(), (int) e.getY());
