@@ -1,5 +1,13 @@
+此项目拷贝于https://github.com/wangchenyan/lrcview
+
+由于原版没有添加点击事件，此版本在此基础上继续完善
+
+1.0.0：添加歌词控件的单击事件
+
+
 # lrcview
-[![Download](https://api.bintray.com/packages/chanwong21/maven/lrcview/images/download.svg)](https://bintray.com/chanwong21/maven/lrcview/_latestVersion)
+[![Download](https://api.bintray.com/ruanbaojun1105/maven/lrcview/images/download.svg)](
+https://dl.bintray.com/ruanbaojun1105/maven/lrcview/_latestVersion)
 
 ## 系列文章
 - [Android开源在线音乐播放器——波尼音乐](https://juejin.im/post/5c373a32e51d4551cc6df6db)
@@ -11,7 +19,6 @@
 ## 前言
 上一节我们仿照云音乐实现了黑胶唱片专辑封面，这节我们该实现歌词显示了。当然，歌词不仅仅是显示就完了，作为一个有素质的音乐播放器，我们当然还需要根据歌曲进度自动滚动歌词，并且要支持上下拖动。
 
-- 项目地址：https://github.com/wangchenyan/lrcview
 - 有问题请提Issues
 - 如果喜欢，欢迎Star！
 
@@ -20,38 +27,15 @@ Android歌词控件，支持上下拖动歌词，歌词自动换行，自定义�
 
 ![](https://raw.githubusercontent.com/wangchenyan/lrcview/master/art/screenshot.gif)
 
-## 更新说明
-`v 2.1.0`
-- 新增支持双语歌词
-- 修复横竖屏切换问题
-
-`v 2.0`
-- 新增上下拖动歌词功能
-
-`v 1.4`
-- 解析歌词放在工作线程中
-- 优化多行歌词时动画不流畅
-
-`v 1.3`
-- 支持多个时间标签
-
-`v 1.2`
-- 支持RTL（从右向左）语言
-
-`v 1.1`
-- 新增歌词自动换行
-- 新增自定义歌词Padding
-- 优化歌词解析
-
-`v 1.0`
-- 支持自动滚动
-- 支持自定义属性
 
 ## 使用
 **Gradle**
 ```
 // "latestVersion"改为文首徽章后对应的数值
 implementation 'me.wcy:lrcview:latestVersion'
+
+或者用：implementation 'com.rbj:lrcView:1.0.0'
+我的最新版
 ```
 
 ## 属性
@@ -96,150 +80,6 @@ implementation 'me.wcy:lrcview:latestVersion'
 | setCurrentTextSize | 当前歌词文本字体大小 |
 | setNormalTextSize | 普通歌词文本字体大小 |
 
-## 思路分析
-正常播放时，当前播放的那一行应该在视图中央，首先计算出每一行位于中央时画布应该滚动的距离。<br>
-将所有歌词按顺序画出，然后将画布滚动的相应的距离，将正在播放的歌词置于屏幕中央。<br>
-歌词滚动时要有动画，使用属性动画即可，我们可以使用当前行和上一行的滚动距离作为动画的起止值。<br>
-多行歌词绘制采用StaticLayout。
-
-上下拖动时，歌词跟随手指滚动，绘制时间线。<br>
-手指离开屏幕时，一段时间内，如果没有下一步操作，则隐藏时间线，同时将歌词滚动到实际位置，回到正常播放状态；<br>
-如果点击播放按钮，则跳转到指定位置，回到正常播放状态。
-
-## 代码实现
-onDraw 中将歌词文本绘出，mOffset 是当前应该滚动的距离
-```
-@Override
-protected void onDraw(Canvas canvas) {
-    super.onDraw(canvas);
-
-    int centerY = getHeight() / 2;
-
-    // 无歌词文件
-    if (!hasLrc()) {
-        mLrcPaint.setColor(mCurrentTextColor);
-        @SuppressLint("DrawAllocation")
-        StaticLayout staticLayout = new StaticLayout(mDefaultLabel, mLrcPaint, (int) getLrcWidth(),
-                Layout.Alignment.ALIGN_CENTER, 1f, 0f, false);
-        drawText(canvas, staticLayout, centerY);
-        return;
-    }
-
-    int centerLine = getCenterLine();
-
-    if (isShowTimeline) {
-        mPlayDrawable.draw(canvas);
-
-        mTimePaint.setColor(mTimelineColor);
-        canvas.drawLine(mTimeTextWidth, centerY, getWidth() - mTimeTextWidth, centerY, mTimePaint);
-
-        mTimePaint.setColor(mTimeTextColor);
-        String timeText = LrcUtils.formatTime(mLrcEntryList.get(centerLine).getTime());
-        float timeX = getWidth() - mTimeTextWidth / 2;
-        float timeY = centerY - (mTimeFontMetrics.descent + mTimeFontMetrics.ascent) / 2;
-        canvas.drawText(timeText, timeX, timeY, mTimePaint);
-    }
-
-    canvas.translate(0, mOffset);
-
-    float y = 0;
-    for (int i = 0; i < mLrcEntryList.size(); i++) {
-        if (i > 0) {
-            y += (mLrcEntryList.get(i - 1).getHeight() + mLrcEntryList.get(i).getHeight()) / 2 + mDividerHeight;
-        }
-        if (i == mCurrentLine) {
-            mLrcPaint.setColor(mCurrentTextColor);
-        } else if (isShowTimeline && i == centerLine) {
-            mLrcPaint.setColor(mTimelineTextColor);
-        } else {
-            mLrcPaint.setColor(mNormalTextColor);
-        }
-        drawText(canvas, mLrcEntryList.get(i).getStaticLayout(), y);
-    }
-}
-```
-手势监听器
-```
-private GestureDetector.SimpleOnGestureListener mSimpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {
-    @Override
-    public boolean onDown(MotionEvent e) {
-        if (hasLrc() && mOnPlayClickListener != null) {
-            mScroller.forceFinished(true);
-            removeCallbacks(hideTimelineRunnable);
-            isTouching = true;
-            isShowTimeline = true;
-            invalidate();
-            return true;
-        }
-        return super.onDown(e);
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        if (hasLrc()) {
-            mOffset += -distanceY;
-            mOffset = Math.min(mOffset, getOffset(0));
-            mOffset = Math.max(mOffset, getOffset(mLrcEntryList.size() - 1));
-            invalidate();
-            return true;
-        }
-        return super.onScroll(e1, e2, distanceX, distanceY);
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        if (hasLrc()) {
-            mScroller.fling(0, (int) mOffset, 0, (int) velocityY, 0, 0, (int) getOffset(mLrcEntryList.size() - 1), (int) getOffset(0));
-            isFling = true;
-            return true;
-        }
-        return super.onFling(e1, e2, velocityX, velocityY);
-    }
-
-    @Override
-    public boolean onSingleTapConfirmed(MotionEvent e) {
-        if (hasLrc() && isShowTimeline && mPlayDrawable.getBounds().contains((int) e.getX(), (int) e.getY())) {
-            int centerLine = getCenterLine();
-            long centerLineTime = mLrcEntryList.get(centerLine).getTime();
-            // onPlayClick 消费了才更新 UI
-            if (mOnPlayClickListener != null && mOnPlayClickListener.onPlayClick(centerLineTime)) {
-                isShowTimeline = false;
-                removeCallbacks(hideTimelineRunnable);
-                mCurrentLine = centerLine;
-                invalidate();
-                return true;
-            }
-        }
-        return super.onSingleTapConfirmed(e);
-    }
-};
-```
-滚动动画
-```
-private void scrollTo(int line, long duration) {
-    float offset = getOffset(line);
-    endAnimation();
-
-    mAnimator = ValueAnimator.ofFloat(mOffset, offset);
-    mAnimator.setDuration(duration);
-    mAnimator.setInterpolator(new LinearInterpolator());
-    mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-        @Override
-        public void onAnimationUpdate(ValueAnimator animation) {
-            mOffset = (float) animation.getAnimatedValue();
-            invalidate();
-        }
-    });
-    mAnimator.start();
-}
-```
-
-代码比较简单，大家根据源码和注释很容易就能看懂。到这里，我们已经实现了可拖动的歌词控件了。<br>
-截图看比较简单，大家可以运行源码或下载[波尼音乐](http://fir.im/ponymusic)查看详细效果。
-
-## 关于作者
-掘金：https://juejin.im/user/58abd9f1da2f607e924e945a<br>
-微博：http://weibo.com/wangchenyan1993
 
 ## License
 

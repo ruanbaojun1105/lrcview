@@ -42,7 +42,7 @@ import java.util.List;
 
 /**
  * 歌词
- * Created by wcy on 2015/11/9.
+ * Created by RuanJeam on 2020/04/07.
  */
 @SuppressLint("StaticFieldLeak")
 public class LrcView extends View {
@@ -82,13 +82,21 @@ public class LrcView extends View {
     /**
      * 播放按钮点击监听器，点击后应该跳转到指定播放位置
      */
-    public interface OnPlayClickListener {
+    public interface OnPlayClickListener extends OnClickListenerCus {
         /**
          * 播放按钮被点击，应该跳转到指定播放位置
          *
          * @return 是否成功消费该事件，如果成功消费，则会更新UI
          */
-        boolean onPlayClick(long time);
+        void onPlayClick(long time);
+        boolean canDraggable();
+    }
+
+    public interface OnClickListenerCus {
+        /**
+         * 单击事件
+         */
+        void onClick();
     }
 
     public LrcView(Context context) {
@@ -220,17 +228,6 @@ public class LrcView extends View {
         } else {
             mOnPlayClickListener = null;
         }
-    }
-
-    /**
-     * 设置播放按钮点击监听器
-     *
-     * @param onPlayClickListener 如果为非 null ，则激活歌词拖动功能，否则将将禁用歌词拖动功能
-     * @deprecated use {@link #setDraggable(boolean, OnPlayClickListener)} instead
-     */
-    @Deprecated
-    public void setOnPlayClickListener(OnPlayClickListener onPlayClickListener) {
-        mOnPlayClickListener = onPlayClickListener;
     }
 
     /**
@@ -533,17 +530,25 @@ public class LrcView extends View {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            if (hasLrc() && isShowTimeline && mPlayDrawable.getBounds().contains((int) e.getX(), (int) e.getY())) {
+            boolean isContainBound= mPlayDrawable.getBounds().contains((int) e.getX(), (int) e.getY());
+            if (hasLrc() && isShowTimeline &&isContainBound) {
                 int centerLine = getCenterLine();
                 long centerLineTime = mLrcEntryList.get(centerLine).getTime();
                 // onPlayClick 消费了才更新 UI
-                if (mOnPlayClickListener != null && mOnPlayClickListener.onPlayClick(centerLineTime)) {
+                if (mOnPlayClickListener != null&&mOnPlayClickListener.canDraggable()) {
                     isShowTimeline = false;
                     removeCallbacks(hideTimelineRunnable);
                     mCurrentLine = centerLine;
                     invalidate();
+
+                    mOnPlayClickListener.onPlayClick(centerLineTime);
                     return true;
                 }
+            }
+            if (!isContainBound&&mOnPlayClickListener != null){
+                System.out.println("单击");
+                mOnPlayClickListener.onClick();
+                return true;
             }
             return super.onSingleTapConfirmed(e);
         }

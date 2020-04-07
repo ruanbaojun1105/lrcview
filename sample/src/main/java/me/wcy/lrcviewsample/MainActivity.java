@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,13 +61,25 @@ public class MainActivity extends AppCompatActivity {
         // String url = "http://pz6twp8s0.bkt.clouddn.com/%E6%AD%8C%E8%AF%8D.txt";
         // lrcView.loadLrcByUrl(url, "gb2312");
 
-        lrcView.setDraggable(true, time -> {
-            mediaPlayer.seekTo((int) time);
-            if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.start();
-                handler.post(runnable);
+        lrcView.setDraggable(true, new LrcView.OnPlayClickListener() {
+            @Override
+            public void onPlayClick(long time) {
+                mediaPlayer.seekTo((int) time);
+                if (!mediaPlayer.isPlaying()) {
+                    mediaPlayer.start();
+                    handler.post(runnable);
+                }
             }
-            return true;
+
+            @Override
+            public boolean canDraggable() {
+                return true;
+            }
+
+            @Override
+            public void onClick() {
+                Toast.makeText(MainActivity.this,"单击事件",Toast.LENGTH_SHORT).show();
+            }
         });
 
         btnPlayPause.setOnClickListener(v -> {

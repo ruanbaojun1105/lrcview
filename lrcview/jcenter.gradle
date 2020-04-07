@@ -3,21 +3,21 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'lrcview'
+    bintrayName = 'lrcView'
 
-    publishedGroupId = 'me.wcy'
-    artifact = 'lrcview'
+    publishedGroupId = 'com.rbj'
+    artifact = 'lrcView'
 
-    libraryName = 'lrcview'
+    libraryName = 'lrcView'
     libraryVersion = VERSION_NAME
     libraryDescription = 'A lyric view on Android'
 
-    siteUrl = 'https://github.com/wangchenyan/LrcView'
-    gitUrl = 'https://github.com/wangchenyan/LrcView.git'
+    siteUrl = 'https://github.com/ruanbaojun1105/lrcview'
+    gitUrl = 'https://github.com/ruanbaojun1105/lrcview.git'
 
-    developerId = 'wangchenyan'
-    developerName = 'wcy'
-    developerEmail = '919247701@qq.com'
+    developerId = 'ruanbaojun1105'
+    developerName = 'RuanJeam'
+    developerEmail = 'ruanbaojun1105@gmail.com'
 
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
