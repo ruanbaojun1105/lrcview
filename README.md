@@ -83,7 +83,7 @@ implementation 'me.wcy:lrcview:latestVersion'
 
 ## License
 
-    Copyright 2017 wangchenyan
+    Copyright 2020 RuanJeam
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
