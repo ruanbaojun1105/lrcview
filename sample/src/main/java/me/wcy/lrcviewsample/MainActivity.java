@@ -77,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
+            public boolean canCenterLinePlayClick() {
+                return true;
+            }
+
+            @Override
             public void onClick() {
                 Toast.makeText(MainActivity.this,"单击事件",Toast.LENGTH_SHORT).show();
             }

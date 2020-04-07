@@ -6,7 +6,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
+        classpath 'com.android.tools.build:gradle:3.6.2'
     }
 }
 
@@ -15,8 +15,12 @@ allprojects {
         jcenter()
         google()
     }
-}
 
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+    }
+}
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

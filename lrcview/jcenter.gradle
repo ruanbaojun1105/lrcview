@@ -3,12 +3,12 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'lrcView'
+    bintrayName = 'lrcview'
 
     publishedGroupId = 'com.rbj'
-    artifact = 'lrcView'
+    artifact = 'lrcview'
 
-    libraryName = 'lrcView'
+    libraryName = 'lrcview'
     libraryVersion = VERSION_NAME
     libraryDescription = 'A lyric view on Android'
 

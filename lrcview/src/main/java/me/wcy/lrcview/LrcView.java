@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Looper;
@@ -90,6 +91,12 @@ public class LrcView extends View {
          */
         void onPlayClick(long time);
         boolean canDraggable();
+
+        /**
+         * 是否能点击中心轴并播放
+         * @return
+         */
+        boolean canCenterLinePlayClick();
     }
 
     public interface OnClickListenerCus {
@@ -530,7 +537,12 @@ public class LrcView extends View {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            boolean isContainBound= mPlayDrawable.getBounds().contains((int) e.getX(), (int) e.getY());
+            Rect rect=mPlayDrawable.getBounds();
+            if (mOnPlayClickListener.canCenterLinePlayClick()){
+                System.out.println(rect.toString());
+                rect.right=getWidth() - mTimeTextWidth / 2;
+            }
+            boolean isContainBound= rect.contains((int) e.getX(), (int) e.getY());
             if (hasLrc() && isShowTimeline &&isContainBound) {
                 int centerLine = getCenterLine();
                 long centerLineTime = mLrcEntryList.get(centerLine).getTime();
@@ -546,7 +558,6 @@ public class LrcView extends View {
                 }
             }
             if (!isContainBound&&mOnPlayClickListener != null){
-                System.out.println("单击");
                 mOnPlayClickListener.onClick();
                 return true;
             }
