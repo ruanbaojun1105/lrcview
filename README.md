@@ -3,6 +3,7 @@
 由于原版没有添加点击事件，后续版本在此基础上继续完善
 
 1.0.0：添加歌词控件的单击事件
+1.0.1：修改中轴线的单击事件
 
 
 # lrcview
@@ -34,7 +35,7 @@ Android歌词控件，支持上下拖动歌词，歌词自动换行，自定义�
 // "latestVersion"改为文首徽章后对应的数值
 implementation 'me.wcy:lrcview:latestVersion'
 
-或者用：implementation 'com.rbj:lrcView:1.0.0'
+或者用：implementation 'com.rbj:lrcView:1.0.1'
 我的最新版
 ```
 
