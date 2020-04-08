@@ -6,7 +6,7 @@
 // "latestVersion"改为文首徽章后对应的数值
 implementation 'me.wcy:lrcview:latestVersion'
 
-或者用：implementation 'com.rbj:lrcView:1.0.5'
+或者用：implementation 'com.rbj:lrcview:1.0.5'
 我的最新版
 ```
 
