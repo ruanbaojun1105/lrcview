@@ -3,11 +3,15 @@
 ## 使用
 **Gradle**
 ```
-// "latestVersion"改为文首徽章后对应的数值
-implementation 'me.wcy:lrcview:latestVersion'
 
-或者用：implementation 'com.rbj:lrcview:1.0.5'
-我的最新版
+
+[ ![Download](https://api.bintray.com/packages/ruanbaojun1105/maven/lrcview/images/download.svg) ](https://bintray.com/ruanbaojun1105/maven/lrcview/_latestVersion)
+
+
+implementation 'com.rbj:lrcview:1.0.5'
+
+
+
 ```
 
 1.0.0：添加歌词控件的单击事件
