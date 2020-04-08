@@ -1,26 +1,18 @@
 此项目拷贝于https://github.com/wangchenyan/lrcview
 
+# lrcview
+[ ![Download](https://api.bintray.com/packages/ruanbaojun1105/maven/lrcview/images/download.svg) ](
+https://bintray.com/ruanbaojun1105/maven/lrcview/_latestVersion)
+
 ## 使用
 **Gradle**
-```
-
-
-[ ![Download](https://api.bintray.com/packages/ruanbaojun1105/maven/lrcview/images/download.svg) ](https://bintray.com/ruanbaojun1105/maven/lrcview/_latestVersion)
-
-
 implementation 'com.rbj:lrcview:1.0.5'
 
 
 
-```
+# 1.0.0：添加歌词控件的单击事件
+# 1.0.5：修改中轴线的单击事件
 
-1.0.0：添加歌词控件的单击事件
-1.0.5：修改中轴线的单击事件
-
-
-# lrcview
-[![Download](https://api.bintray.com/ruanbaojun1105/maven/lrcview/images/download.svg)](
-https://dl.bintray.com/ruanbaojun1105/maven/lrcview/_latestVersion)
 
 ## 系列文章
 - [Android开源在线音乐播放器——波尼音乐](https://juejin.im/post/5c373a32e51d4551cc6df6db)
@@ -29,10 +21,6 @@ https://dl.bintray.com/ruanbaojun1105/maven/lrcview/_latestVersion)
 - [Android开源音乐播放器之自动滚动歌词](https://juejin.im/post/5c373a336fb9a049f43b85de)
 - [Android开源音乐播放器之在线音乐列表自动加载更多](https://juejin.im/post/5c373a336fb9a049b82aaaaf)
 
-## 前言
-上一节我们仿照云音乐实现了黑胶唱片专辑封面，这节我们该实现歌词显示了。当然，歌词不仅仅是显示就完了，作为一个有素质的音乐播放器，我们当然还需要根据歌曲进度自动滚动歌词，并且要支持上下拖动。
-
-- 有问题请提Issues
 - 如果喜欢，欢迎Star！
 
 ## 简介
