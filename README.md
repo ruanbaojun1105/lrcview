@@ -1,9 +1,17 @@
 此项目拷贝于https://github.com/wangchenyan/lrcview
 
-由于原版没有添加点击事件，后续版本在此基础上继续完善
+## 使用
+**Gradle**
+```
+// "latestVersion"改为文首徽章后对应的数值
+implementation 'me.wcy:lrcview:latestVersion'
+
+或者用：implementation 'com.rbj:lrcView:1.0.5'
+我的最新版
+```
 
 1.0.0：添加歌词控件的单击事件
-1.0.1：修改中轴线的单击事件
+1.0.5：修改中轴线的单击事件
 
 
 # lrcview
@@ -28,16 +36,6 @@ Android歌词控件，支持上下拖动歌词，歌词自动换行，自定义�
 
 ![](https://raw.githubusercontent.com/wangchenyan/lrcview/master/art/screenshot.gif)
 
-
-## 使用
-**Gradle**
-```
-// "latestVersion"改为文首徽章后对应的数值
-implementation 'me.wcy:lrcview:latestVersion'
-
-或者用：implementation 'com.rbj:lrcView:1.0.1'
-我的最新版
-```
 
 ## 属性
 | 属性 | 描述 |
